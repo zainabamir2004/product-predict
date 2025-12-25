@@ -8,47 +8,57 @@ model = pickle.load(open("model.pkl", "rb"))
 # 2. Page Config
 st.set_page_config(page_title="Product Predictor", page_icon="🛒")
 
-# 3. Custom CSS for Visuals & Mobile Visibility
+# 3. Enhanced CSS for Visibility & Layout
 st.markdown("""
     <style>
+    /* Force main background color */
     .stApp {
         background-color: #f4f7f6;
     }
-    /* Fix for mobile text visibility */
-    label, .stSubheader, p {
-        color: #2c3e50 !important;
-        font-weight: 500 !important;
+    
+    /* Fix for title text blending with background */
+    .header-container {
+        background-color: #2c3e50; 
+        padding: 15px; 
+        border-radius: 12px; 
+        margin-bottom: 20px;
+        text-align: center;
     }
-    div.stButton > button:first-child {
-        background: linear-gradient(to right, #00b4db, #0083b0);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        height: 3em;
-        width: 100%;
-        font-weight: bold;
-    }
-    /* Responsive Header Text */
+    
     .main-title {
-        color: white; 
-        text-align: center; 
-        font-size: 28px; /* Reduced size to fit one line */
-        margin: 0;
-        font-weight: bold;
+        color: #ffffff !important; /* Force Pure White */
+        font-size: 24px !important; /* Smaller size to stay on one line */
+        margin: 0 !important;
+        font-weight: bold !important;
+        line-height: 1.2 !important;
     }
+    
+    .sub-title {
+        color: #ecf0f1 !important; /* Light gray-white */
+        font-size: 14px !important;
+        margin-top: 5px !important;
+    }
+
+    /* Mobile Responsive Font Size */
     @media (max-width: 600px) {
         .main-title {
-            font-size: 20px; /* Even smaller for phones */
+            font-size: 18px !important;
         }
+    }
+
+    /* Ensure labels are visible on phone */
+    label p {
+        color: #2c3e50 !important;
+        font-weight: bold !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# 4. Updated HTML Header (Smaller Font)
+# 4. Refined Header
 st.markdown("""
-    <div style="background: #2c3e50; padding: 20px; border-radius: 15px; margin-bottom: 25px;">
+    <div class="header-container">
         <h1 class="main-title">🛒 Product Recommendation System</h1>
-        <p style="color: #ecf0f1; text-align: center; margin: 5px 0 0 0; font-size: 14px;">Learning Consumer Behaviour</p>
+        <p class="sub-title">Learning Consumer Behaviour</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -67,22 +77,14 @@ with st.container():
 st.markdown("---")
 
 # 6. Prediction Logic
-if st.button("Generate AI Prediction"):
+if st.button("Predict", use_container_width=True):
     features = np.array([[user_id, product_id, times_bought, recency, prod_pop]])
     prediction = model.predict(features)
     
     if prediction[0] == 1:
         st.balloons()
-        st.markdown("""
-            <div style="background-color: #d4edda; border-left: 10px solid #28a745; padding: 20px; border-radius: 10px;">
-                <h2 style="color: #155724; margin: 0; font-size: 18px;">✅ Result: High Reorder Probability</h2>
-                <p style="color: #155724;">This user is very likely to purchase this product again.</p>
-            </div>
-            """, unsafe_allow_html=True)
+        st.success("### ✅ Result: High Reorder Probability")
+        st.write("This user is very likely to purchase this product again.")
     else:
-        st.markdown("""
-            <div style="background-color: #f8d7da; border-left: 10px solid #dc3545; padding: 20px; border-radius: 10px;">
-                <h2 style="color: #721c24; margin: 0; font-size: 18px;">❌ Result: Low Reorder Probability</h2>
-                <p style="color: #721c24;">This user is unlikely to buy this specific product in their next order.</p>
-            </div>
-            """, unsafe_allow_html=True)
+        st.error("### ❌ Result: Low Reorder Probability")
+        st.write("This user is unlikely to buy this specific product in their next order.")
