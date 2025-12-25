@@ -8,15 +8,15 @@ model = pickle.load(open("model.pkl", "rb"))
 # 2. Page Config
 st.set_page_config(page_title="Product Predictor", page_icon="🛒")
 
-# 3. Enhanced CSS for Visibility & Layout
+# 3. High-Contrast CSS for Mobile Visibility
 st.markdown("""
     <style>
-    /* Force main background color */
+    /* Force main app background */
     .stApp {
-        background-color: #f4f7f6;
+        background-color: #f4f7f6 !important;
     }
     
-    /* Fix for title text blending with background */
+    /* Header Box Styling */
     .header-container {
         background-color: #2c3e50; 
         padding: 15px; 
@@ -26,30 +26,42 @@ st.markdown("""
     }
     
     .main-title {
-        color: #ffffff !important; /* Force Pure White */
-        font-size: 24px !important; /* Smaller size to stay on one line */
+        color: #ffffff !important; 
+        font-size: 22px !important; 
         margin: 0 !important;
         font-weight: bold !important;
-        line-height: 1.2 !important;
     }
     
     .sub-title {
-        color: #ecf0f1 !important; /* Light gray-white */
-        font-size: 14px !important;
-        margin-top: 5px !important;
+        color: #ecf0f1 !important; 
+        font-size: 13px !important;
     }
 
-    /* Mobile Responsive Font Size */
+    /* FORCE TEXT COLOR FOR VISIBILITY ON PHONE */
+    /* This targets the 'Customer Data Input' subheader */
+    h3, .stSubheader {
+        color: #1a2a3a !important;
+        font-weight: 800 !important;
+        background: none !important;
+    }
+
+    /* This targets the labels like 'User ID', 'Product ID', etc. */
+    label p {
+        color: #1a2a3a !important;
+        font-weight: bold !important;
+        font-size: 16px !important;
+    }
+
+    /* Make input boxes slightly darker so they don't blend with background */
+    .stNumberInput div div {
+        background-color: #ffffff !important;
+        border: 1px solid #d1d8e0 !important;
+    }
+
     @media (max-width: 600px) {
         .main-title {
             font-size: 18px !important;
         }
-    }
-
-    /* Ensure labels are visible on phone */
-    label p {
-        color: #2c3e50 !important;
-        font-weight: bold !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -77,7 +89,7 @@ with st.container():
 st.markdown("---")
 
 # 6. Prediction Logic
-if st.button("Predict", use_container_width=True):
+if st.button("Generate AI Prediction", use_container_width=True):
     features = np.array([[user_id, product_id, times_bought, recency, prod_pop]])
     prediction = model.predict(features)
     
