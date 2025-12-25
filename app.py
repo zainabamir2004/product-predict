@@ -72,7 +72,7 @@ st.markdown("""
 # 4. Refined Header
 st.markdown("""
     <div class="header-container">
-        <h1 class="main-title">🛒 Product Recommendation System</h1>
+        <h1 class="main-title">🛒 Customer Purchase Predictor</h1>
         <p class="sub-title">Learning Consumer Behaviour</p>
     </div>
     """, unsafe_allow_html=True)
