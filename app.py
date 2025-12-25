@@ -8,7 +8,7 @@ model = pickle.load(open("model.pkl", "rb"))
 # 2. Page Config
 st.set_page_config(page_title="Product Predictor", page_icon="🛒")
 
-# 3. High-Contrast CSS for Mobile Visibility
+# 3. High-Contrast CSS for Mobile Visibility & Font Balancing
 st.markdown("""
     <style>
     /* Force main app background */
@@ -27,7 +27,7 @@ st.markdown("""
     
     .main-title {
         color: #ffffff !important; 
-        font-size: 22px !important; 
+        font-size: 28px !important; /* Made a bit bigger */
         margin: 0 !important;
         font-weight: bold !important;
     }
@@ -37,22 +37,22 @@ st.markdown("""
         font-size: 13px !important;
     }
 
-    /* FORCE TEXT COLOR FOR VISIBILITY ON PHONE */
-    /* This targets the 'Customer Data Input' subheader */
+    /* CUSTOMER DATA INPUT HEADING - Made smaller */
     h3, .stSubheader {
         color: #1a2a3a !important;
-        font-weight: 800 !important;
-        background: none !important;
+        font-size: 18px !important; /* Reduced from default */
+        font-weight: 700 !important;
+        margin-top: 10px !important;
     }
 
-    /* This targets the labels like 'User ID', 'Product ID', etc. */
+    /* Input labels visibility */
     label p {
         color: #1a2a3a !important;
         font-weight: bold !important;
-        font-size: 16px !important;
+        font-size: 15px !important;
     }
 
-    /* Make input boxes slightly darker so they don't blend with background */
+    /* Input box styling */
     .stNumberInput div div {
         background-color: #ffffff !important;
         border: 1px solid #d1d8e0 !important;
@@ -60,7 +60,10 @@ st.markdown("""
 
     @media (max-width: 600px) {
         .main-title {
-            font-size: 18px !important;
+            font-size: 22px !important; /* Adjusted for mobile */
+        }
+        h3, .stSubheader {
+            font-size: 16px !important;
         }
     }
     </style>
@@ -89,7 +92,7 @@ with st.container():
 st.markdown("---")
 
 # 6. Prediction Logic
-if st.button("Generate AI Prediction", use_container_width=True):
+if st.button("Predict", use_container_width=True):
     features = np.array([[user_id, product_id, times_bought, recency, prod_pop]])
     prediction = model.predict(features)
     
